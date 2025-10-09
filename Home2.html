@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinh Trắc Học Vân Tay - Khám Phá Tiềm Năng Bản Thân</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #1a1a2e;
+            overflow-x: hidden;
+            background: #0f0f23;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: linear-gradient(45deg, #0f0f23, #16213e, #0f0f23);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            background: radial-gradient(circle, rgba(147, 51, 234, 0.1), transparent);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 3s;
+        }
+
+        .shape:nth-child(3) {
+            width: 400px;
+            height: 400px;
+            bottom: 10%;
+            left: 50%;
+            animation-delay: 6s;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        /* Header with Glass Effect */
+        header {
+            background: rgba(15, 15, 35, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.2rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background: rgba(15, 15, 35, 0.95);
+            box-shadow: 0 10px 40px rgba(147, 51, 234, 0.3);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 3rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #a78bfa, #ec4899);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #a78bfa;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section with 3D Effect */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 150px 2rem 100px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(167, 139, 250, 0.1);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            color: #a78bfa;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            animation: fadeInDown 1s ease;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #a78bfa 50%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);
+            color: white;
+            padding: 18px 45px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 40px rgba(167, 139, 250, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 20px 60px rgba(167, 139, 250, 0.6);
+        }
+
+        .cta-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(167, 139, 250, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Particles Effect */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(167, 139, 250, 0.8), transparent);
+            border-radius: 50%;
+            animation: particle-float 15s infinite;
+        }
+
+        @keyframes particle-float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-1000px) translateX(100px); opacity: 0; }
+        }
+
+        /* Stats Section */
+        .stats {
+            max-width: 1400px;
+            margin: -80px auto 100px;
+            padding: 0 3rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(22, 33, 62, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(167, 139, 250, 0.2);
+            padding: 3rem 2rem;
+            border-radius: 25px;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.1), rgba(236, 72, 153, 0.1));
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-15px);
+            border-color: rgba(167, 139, 250, 0.5);
+            box-shadow: 0 20px 60px rgba(167, 139, 250, 0.3);
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Features Section with Cards */
+        .features {
+            max-width: 1400px;
+            margin: 120px auto;
+            padding: 0 3rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: rgba(167, 139, 250, 0.1);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            color: #a78bfa;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 3.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .feature-card {
+            background: rgba(22, 33, 62, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(167, 139, 250, 0.2);
+            padding: 3rem;
+            border-radius: 30px;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.15), rgba(236, 72, 153, 0.15));
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-20px) scale(1.02);
+            border-color: rgba(167, 139, 250, 0.5);
+            box-shadow: 0 30px 80px rgba(167, 139, 250, 0.4);
+        }
+
+        .feature-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .feature-card h3 {
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            position: relative;
+        }
+
+        /* Process Timeline */
+        .process {
+            background: linear-gradient(180deg, rgba(22, 33, 62, 0.3) 0%, transparent 100%);
+            padding: 120px 3rem;
+            position: relative;
+        }
+
+        .process-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .timeline {
+            position: relative;
+            margin-top: 5rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, #a78bfa, #ec4899);
+            border-radius: 4px;
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5rem;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: 45%;
+            background: rgba(22, 33, 62, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(167, 139, 250, 0.2);
+            padding: 3rem;
+            border-radius: 25px;
+            transition: all 0.4s ease;
+        }
+
+        .timeline-content:hover {
+            transform: scale(1.05);
+            border-color: rgba(167, 139, 250, 0.5);
+            box-shadow: 0 20px 60px rgba(167, 139, 250, 0.3);
+        }
+
+        .timeline-number {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 900;
+            color: white;
+            box-shadow: 0 10px 40px rgba(167, 139, 250, 0.5);
+            z-index: 10;
+        }
+
+        .timeline-content h3 {
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-content p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        /* Slider Styles */
+        .slider-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 4rem auto 5rem;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(167, 139, 250, 0.4);
+        }
+
+        .slider-wrapper {
+            position: relative;
+            width: 100%;
+            height: 500px;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            display: flex;
+            align-items: center;
+            background: rgba(22, 33, 62, 0.8);
+            backdrop-filter: blur(20px);
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide-image {
+            width: 50%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .slide-content {
+            width: 50%;
+            padding: 4rem;
+            color: white;
+        }
+
+        .slide-content h3 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .slide-content p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(167, 139, 250, 0.3);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(167, 139, 250, 0.5);
+            color: white;
+            padding: 1rem 1.5rem;
+            font-size: 2rem;
+            cursor: pointer;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .slider-btn:hover {
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            border-color: transparent;
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 10px 30px rgba(167, 139, 250, 0.5);
+        }
+
+        .prev-btn {
+            left: 2rem;
+        }
+
+        .next-btn {
+            right: 2rem;
+        }
+
+        .slider-dots {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            z-index: 100;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .dot:hover {
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(1.2);
+        }
+
+        .dot.active {
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            width: 40px;
+            border-radius: 10px;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Testimonials */
+        .testimonials {
+            max-width: 1400px;
+            margin: 120px auto;
+            padding: 0 3rem;
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 5rem;
+        }
+
+        .testimonial-card {
+            background: rgba(22, 33, 62, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(167, 139, 250, 0.2);
+            padding: 3rem;
+            border-radius: 30px;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            left: 30px;
+            font-size: 8rem;
+            color: rgba(167, 139, 250, 0.1);
+            font-family: Georgia, serif;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(167, 139, 250, 0.5);
+            box-shadow: 0 20px 60px rgba(167, 139, 250, 0.3);
+        }
+
+        .testimonial-text {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .author-info h4 {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .author-info p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.95rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            max-width: 1200px;
+            margin: 120px auto;
+            padding: 0 3rem;
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.2), rgba(236, 72, 153, 0.2));
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(167, 139, 250, 0.3);
+            padding: 5rem 4rem;
+            border-radius: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(167, 139, 250, 0.1), transparent);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        .cta-box h2 {
+            font-size: 3rem;
+            color: white;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .cta-box p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 15, 35, 0.95);
+            border-top: 1px solid rgba(167, 139, 250, 0.2);
+            padding: 5rem 3rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.8;
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            background: rgba(167, 139, 250, 0.1);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a78bfa;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(167, 139, 250, 0.4);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .timeline::before {
+                left: 30px;
+            }
+
+            .timeline-item {
+                flex-direction: column !important;
+                align-items: flex-start;
+            }
+
+            .timeline-content {
+                width: 100%;
+                margin-left: 80px;
+            }
+
+            .timeline-number {
+                left: 30px;
+                transform: translateX(0);
+            }
+
+            .slide {
+                flex-direction: column;
+            }
+
+            .slide-image, .slide-content {
+                width: 100%;
+                height: 50%;
+            }
+
+            .slide-content {
+                padding: 2rem;
+            }
+
+            .slide-content h3 {
+                font-size: 1.8rem;
+            }
+
+            .slider-wrapper {
+                height: 600px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            nav {
+                padding: 0 1.5rem;
+            }
+
+            .feature-grid, .stats-grid, .testimonial-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+        <nav>
+            <div class="logo">✨ Sinh Trắc Vân Tay</div>
+            <ul class="nav-links">
+                <li><a href="#home">Trang chủ</a></li>
+                <li><a href="#features">Dịch vụ</a></li>
+                <li><a href="#process">Quy trình</a></li>
+                <li><a href="#testimonials">Đánh giá</a></li>
+                <li><a href="#contact">Liên hệ</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="particles" id="particles"></div>
+        <div class="hero-content">
+            <span class="hero-badge">🚀 Công nghệ sinh trắc học hiện đại nhất</span>
+            <h1>Khám Phá Tiềm Năng<br>Vượt Trội Của Bạn</h1>
+            <p>Phân tích sinh trắc học vân tay khoa học - Định hướng nghề nghiệp chính xác - Phát triển tài năng bẩm sinh</p>
+            <div class="hero-buttons">
+                <button class="cta-button" onclick="alert('Liên hệ: 0123-456-789\nEmail: contact@sinhtracvantay.com')">Đăng Ký Tư Vấn Ngay</button>
+                <button class="cta-button cta-secondary" onclick="alert('Tìm hiểu thêm về dịch vụ của chúng tôi!')">Tìm Hiểu Thêm</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">10,000+</div>
+                <div class="stat-label">Khách hàng tin tưởng</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">98%</div>
+                <div class="stat-label">Độ chính xác</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">15+</div>
+                <div class="stat-label">Năm kinh nghiệm</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Chuyên gia hàng đầu</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="section-header">
+            <span class="section-badge">💎 Dịch vụ của chúng tôi</span>
+            <h2 class="section-title">Giải Pháp Toàn Diện</h2>
+            <p class="section-subtitle">Chúng tôi cung cấp các dịch vụ chuyên sâu giúp bạn hiểu rõ bản thân và phát triển tiềm năng</p>
+        </div>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🧬</div>
+                <h3>Phân Tích Vân Tay</h3>
+                <p>Sử dụng công nghệ sinh trắc học tiên tiến nhất để phân tích cấu trúc vân tay, từ đó xác định đặc điểm não bộ và tính cách bẩm sinh với độ chính xác cao.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Định Hướng Nghề Nghiệp</h3>
+                <p>Tư vấn con đường sự nghiệp phù hợp dựa trên năng lực bẩm sinh, giúp bạn đưa ra quyết định đúng đắn và tiết kiệm thời gian cho tương lai.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💡</div>
+                <h3>Phát Triển Tài Năng</h3>
+                <p>Xây dựng lộ trình phát triển cá nhân chi tiết, khai phá tiềm năng ẩn giấu và tối ưu hóa điểm mạnh của bản thân một cách khoa học.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👨‍👩‍👧‍👦</div>
+                <h3>Tư Vấn Gia Đình</h3>
+                <p>Hiểu rõ đặc điểm tính cách và khả năng của con cái, xây dựng phương pháp giáo dục phù hợp với từng cá nhân để phát triển tối ưu.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Báo Cáo Chi Tiết</h3>
+                <p>Nhận báo cáo phân tích toàn diện về trí thông minh đa dạng, tính cách, năng lực tiềm ẩn và khuynh hướng nghề nghiệp phù hợp.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤝</div>
+                <h3>Tư Vấn Chuyên Sâu</h3>
+                <p>Gặp gỡ trực tiếp với đội ngũ chuyên gia giàu kinh nghiệm để giải đáp mọi thắc mắc và nhận lời khuyên cụ thể cho từng trường hợp.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Timeline -->
+    <section class="process" id="process">
+        <div class="process-container">
+            <div class="section-header">
+                <span class="section-badge">⚡ Quy trình làm việc</span>
+                <h2 class="section-title">Hành Trình Khám Phá</h2>
+                <p class="section-subtitle">Quy trình tư vấn chuyên nghiệp, khoa học và hiệu quả</p>
+            </div>
+            
+            <!-- Image Slider -->
+            <div class="slider-container">
+                <div class="slider-wrapper">
+                    <div class="slide active">
+                        <div class="slide-image" style="background: linear-gradient(135deg, rgba(167, 139, 250, 0.9), rgba(236, 72, 153, 0.9)), url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 400%22><rect fill=%22%23667eea%22 width=%22800%22 height=%22400%22/><text x=%2250%25%22 y=%2250%25%22 font-size=%2260%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22>🔬 Công Nghệ Hiện Đại</text></svg>'); background-size: cover; background-position: center;"></div>
+                        <div class="slide-content">
+                            <h3>Thiết Bị Quét Vân Tay Công Nghệ Cao</h3>
+                            <p>Sử dụng máy quét vân tay hiện đại nhất với độ phân giải siêu cao, đảm bảo thu thập dữ liệu chính xác 99.9%</p>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-image" style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.9), rgba(249, 168, 212, 0.9)), url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 400%22><rect fill=%22%23ec4899%22 width=%22800%22 height=%22400%22/><text x=%2250%25%22 y=%2250%25%22 font-size=%2260%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22>👨‍⚕️ Chuyên Gia</text></svg>'); background-size: cover; background-position: center;"></div>
+                        <div class="slide-content">
+                            <h3>Đội Ngũ Chuyên Gia Hàng Đầu</h3>
+                            <p>Hơn 50 chuyên gia tâm lý học, khoa học não bộ và phát triển nguồn nhân lực với 15+ năm kinh nghiệm</p>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-image" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.9), rgba(147, 197, 253, 0.9)), url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 400%22><rect fill=%22%233b82f6%22 width=%22800%22 height=%22400%22/><text x=%2250%25%22 y=%2250%25%22 font-size=%2260%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22>📊 Phân Tích Chi Tiết</text></svg>'); background-size: cover; background-position: center;"></div>
+                        <div class="slide-content">
+                            <h3>Báo Cáo Toàn Diện & Chính Xác</h3>
+                            <p>Nhận báo cáo 50+ trang phân tích chi tiết về tính cách, năng lực, khuynh hướng nghề nghiệp và lộ trình phát triển</p>
+                        </div>
+                    </div>
+                    <div class="slide">
+                        <div class="slide-image" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.9), rgba(110, 231, 183, 0.9)), url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 800 400%22><rect fill=%22%2310b981%22 width=%22800%22 height=%22400%22/><text x=%2250%25%22 y=%2250%25%22 font-size=%2260%22 fill=%22white%22 text-anchor=%22middle%22 dy=%22.3em%22>🎯 Thành Công</text></svg>'); background-size: cover; background-position: center;"></div>
+                        <div class="slide-content">
+                            <h3>Định Hướng Rõ Ràng & Hiệu Quả</h3>
+                            <p>10,000+ khách hàng đã tìm được con đường phù hợp và đạt được thành công trong sự nghiệp và cuộc sống</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="slider-btn prev-btn" onclick="changeSlide(-1)">❮</button>
+                <button class="slider-btn next-btn" onclick="changeSlide(1)">❯</button>
+                <div class="slider-dots">
+                    <span class="dot active" onclick="goToSlide(0)"></span>
+                    <span class="dot" onclick="goToSlide(1)"></span>
+                    <span class="dot" onclick="goToSlide(2)"></span>
+                    <span class="dot" onclick="goToSlide(3)"></span>
+                </div>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Đăng Ký & Tư Vấn Sơ Bộ</h3>
+                        <p>Liên hệ với chúng tôi qua hotline hoặc website. Đội ngũ tư vấn sẽ giải đáp các thắc mắc ban đầu và hướng dẫn bạn về dịch vụ phù hợp nhất.</p>
+                    </div>
+                    <div class="timeline-number">1</div>
+                    <div class="timeline-content" style="opacity: 0;"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content" style="opacity: 0;"></div>
+                    <div class="timeline-number">2</div>
+                    <div class="timeline-content">
+                        <h3>Quét Vân Tay Công Nghệ Cao</h3>
+                        <p>Sử dụng thiết bị quét vân tay hiện đại nhất để thu thập dữ liệu chính xác. Quá trình nhanh chóng, an toàn và không xâm lấn.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <h3>Phân Tích Chuyên Sâu</h3>
+                        <p>Đội ngũ chuyên gia phân tích dữ liệu vân tay bằng phần mềm chuyên dụng, kết hợp với kiến thức tâm lý học và khoa học thần kinh.</p>
+                    </div>
+                    <div class="timeline-number">3</div>
+                    <div class="timeline-content" style="opacity: 0;"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content" style="opacity: 0;"></div>
+                    <div class="timeline-number">4</div>
+                    <div class="timeline-content">
+                        <h3>Tư Vấn & Lộ Trình</h3>
+                        <p>Nhận báo cáo chi tiết và buổi tư vấn trực tiếp với chuyên gia. Xây dựng lộ trình phát triển cá nhân và định hướng nghề nghiệp cụ thể.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials" id="testimonials">
+        <div class="section-header">
+            <span class="section-badge">💬 Phản hồi khách hàng</span>
+            <h2 class="section-title">Câu Chuyện Thành Công</h2>
+            <p class="section-subtitle">Hàng ngàn khách hàng đã tin tưởng và thành công cùng chúng tôi</p>
+        </div>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <p class="testimonial-text">Sau khi phân tích vân tay, tôi đã hiểu rõ được điểm mạnh của bản thân và tự tin chuyển hướng sang ngành Marketing. Giờ đây tôi đang làm việc tại một công ty lớn và rất hạnh phúc với quyết định của mình!</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">NT</div>
+                    <div class="author-info">
+                        <h4>Nguyễn Thảo</h4>
+                        <p>Marketing Manager • 28 tuổi</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-text">Con trai tôi luôn học không tập trung và kém môn toán. Sau khi phân tích vân tay, tôi mới hiểu con có năng khiếu nghệ thuật. Giờ con học vẽ và rất xuất sắc. Cảm ơn đội ngũ tư vấn đã giúp tôi hiểu con hơn!</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">ML</div>
+                    <div class="author-info">
+                        <h4>Mai Linh</h4>
+                        <p>Phụ huynh • Hà Nội</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-text">Trước khi tốt nghiệp đại học, tôi rất bối rối về con đường sự nghiệp. Nhờ phân tích sinh trắc vân tay, tôi đã chọn ngành IT phù hợp với năng lực của mình. 2 năm sau, tôi đã trở thành Senior Developer!</p>
+                <div class="testimonial-author">
+                    <div class="author-avatar">HT</div>
+                    <div class="author-info">
+                        <h4>Hoàng Tuấn</h4>
+                        <p>Senior Developer • 26 tuổi</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="contact">
+        <div class="cta-box">
+            <h2>Sẵn Sàng Khám Phá Tiềm Năng?</h2>
+            <p>Đừng để tài năng của bạn bị bỏ phí. Hãy bắt đầu hành trình tự khám phá ngay hôm nay!</p>
+            <div class="hero-buttons">
+                <button class="cta-button" onclick="alert('📞 Hotline: 0123-456-789\n📧 Email: contact@sinhtracvantay.com\n📍 Địa chỉ: Hà Nội, Việt Nam\n\nChúng tôi sẽ liên hệ lại với bạn trong vòng 24h!')">Đặt Lịch Tư Vấn Miễn Phí</button>
+                <button class="cta-button cta-secondary" onclick="alert('Tải về brochure và bảng giá chi tiết!')">Tải Tài Liệu</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">✨ Sinh Trắc Vân Tay</div>
+                <p>Trung tâm tư vấn sinh trắc học vân tay hàng đầu Việt Nam. Chúng tôi cam kết mang đến giải pháp phát triển cá nhân toàn diện, khoa học và chính xác nhất.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">f</a>
+                    <a href="#" class="social-link">📷</a>
+                    <a href="#" class="social-link">in</a>
+                    <a href="#" class="social-link">📺</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Dịch Vụ</h3>
+                <p>• Phân tích vân tay cá nhân</p>
+                <p>• Tư vấn định hướng nghề nghiệp</p>
+                <p>• Tư vấn giáo dục con cái</p>
+                <p>• Phát triển tài năng bẩm sinh</p>
+                <p>• Đào tạo chuyên gia</p>
+            </div>
+            <div class="footer-section">
+                <h3>Liên Hệ</h3>
+                <p>📞 Hotline: 0123-456-789</p>
+                <p>📧 Email: contact@sinhtracvantay.com</p>
+                <p>📍 Địa chỉ: 123 Đường ABC, Quận Đống Đa, Hà Nội</p>
+                <p>⏰ Thời gian: 8:00 - 20:00 (Hàng ngày)</p>
+            </div>
+            <div class="footer-section">
+                <h3>Về Chúng Tôi</h3>
+                <p>• Giới thiệu công ty</p>
+                <p>• Đội ngũ chuyên gia</p>
+                <p>• Tin tức & Blog</p>
+                <p>• Câu hỏi thường gặp</p>
+                <p>• Chính sách bảo mật</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Sinh Trắc Học Vân Tay. Tất cả quyền được bảo lưu. Thiết kế bởi Claude AI</p>
+        </div>
+    </footer>
+
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Create particle effect
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.width = Math.random() * 5 + 2 + 'px';
+            particle.style.height = particle.style.width;
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.8s ease forwards';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.feature-card, .stat-card, .timeline-content, .testimonial-card').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Slider functionality
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            if (index >= slides.length) {
+                currentSlide = 0;
+            } else if (index < 0) {
+                currentSlide = slides.length - 1;
+            } else {
+                currentSlide = index;
+            }
+            
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        function goToSlide(index) {
+            showSlide(index);
+        }
+
+        // Auto slide
+        setInterval(() => {
+            changeSlide(1);
+        }, 5000);
+    </script>
+</body>
+</html>

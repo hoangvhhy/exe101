@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Ví dụ Light / Dark Mode</title>
+    <style>
+        /* ======================
+       Theme variables
+       ====================== */
+        :root {
+            --bg: #ffffff;
+            --text: #111111;
+            --card: #f6f6f6;
+            --accent: #0066ff;
+            --muted: #6b7280;
+            --transition: 200ms ease;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0b1220;
+            --text: #e6eef8;
+            --card: #0f1724;
+            --accent: #4da3ff;
+            --muted: #94a3b8;
+        }
+
+        /* Respect system preference initially (only affects default values) */
+        @media (prefers-color-scheme: dark) {
+            :root:not([data-theme]) {
+                --bg: #0b1220;
+                --text: #e6eef8;
+                --card: #0f1724;
+                --accent: #4da3ff;
+                --muted: #94a3b8;
+            }
+        }
+
+        /* ======================
+       Base layout
+       ====================== */
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            transition: background var(--transition), color var(--transition);
+            padding: 2rem;
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .card {
+            background: var(--card);
+            padding: 1.25rem;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(2, 6, 23, 0.08);
+            transition: background var(--transition), box-shadow var(--transition);
+            width: 380px;
+        }
+
+        h1 {
+            margin: 0 0 0.5rem 0;
+            font-size: 1.25rem;
+        }
+
+        p {
+            margin: 0 0 1rem 0;
+            color: var(--muted);
+        }
+
+        /* ======================
+       Toggle button (accessible)
+       ====================== */
+        .theme-toggle {
+            --size: 46px;
+            height: var(--size);
+            width: var(--size);
+            border-radius: 999px;
+            display: inline-grid;
+            place-items: center;
+            border: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.04));
+            cursor: pointer;
+            transition: transform 160ms ease, background var(--transition);
+            box-shadow: 0 2px 8px rgba(2, 6, 23, 0.06);
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.96);
+        }
+
+        .theme-toggle:focus {
+            outline: 3px solid rgba(0, 102, 255, 0.18);
+            outline-offset: 3px;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            transition: transform var(--transition), opacity var(--transition);
+        }
+
+        /* show sun in light mode, moon in dark */
+        [data-theme="dark"] .icon-sun {
+            transform: scale(0.6);
+            opacity: 0;
+        }
+
+        [data-theme="dark"] .icon-moon {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        :root:not([data-theme="dark"]) .icon-sun {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        :root:not([data-theme="dark"]) .icon-moon {
+            transform: scale(0.6);
+            opacity: 0;
+        }
+
+        /* small helper */
+        .row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .muted {
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card" role="region" aria-label="Ví dụ giao diện">
+        <div class="row">
+            <div>
+                <h1>Giao diện sáng / tối</h1>
+                <p class="muted">Nhấn nút để chuyển giữa Light và Dark. Tùy chọn sẽ được lưu lại.</p>
+            </div>
+
+            <!-- Toggle button -->
+            <button id="themeToggle" class="theme-toggle" aria-pressed="false"
+                aria-label="Chuyển đổi giao diện sáng tối" title="Chuyển giao diện">
+                <!-- Sun icon (SVG) -->
+                <svg class="icon icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4"></circle>
+                    <g stroke="currentColor">
+                        <path d="M12 2v2"></path>
+                        <path d="M12 20v2"></path>
+                        <path d="M4.93 4.93l1.41 1.41"></path>
+                        <path d="M17.66 17.66l1.41 1.41"></path>
+                        <path d="M2 12h2"></path>
+                        <path d="M20 12h2"></path>
+                        <path d="M4.93 19.07l1.41-1.41"></path>
+                        <path d="M17.66 6.34l1.41-1.41"></path>
+                    </g>
+                </svg>
+
+                <!-- Moon icon (SVG) -->
+                <svg class="icon icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+        </div>
+
+        <hr style="margin: 1rem 0; border: none; height:1px; background: rgba(0,0,0,0.06)">
+
+        <p>Nội dung demo: đoạn text này sẽ đổi màu theo theme. Bạn có thể thay biến CSS ở phần <code>:root</code> để
+            điều chỉnh màu sắc của cả site.</p>
+
+        <div style="margin-top:1rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+            <button
+                style="padding:0.5rem 0.75rem; border-radius:8px; border:0; background:var(--accent); color:white;">Primary</button>
+            <button
+                style="padding:0.5rem 0.75rem; border-radius:8px; border:1px solid rgba(0,0,0,0.06); background:transparent; color:var(--text);">Secondary</button>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const KEY = 'site-theme'; // key in localStorage
+            const root = document.documentElement;
+            const toggle = document.getElementById('themeToggle');
+
+            // Helper: apply theme
+            function applyTheme(theme) {
+                if (theme === 'dark') {
+                    root.setAttribute('data-theme', 'dark');
+                    toggle.setAttribute('aria-pressed', 'true');
+                } else if (theme === 'light') {
+                    root.setAttribute('data-theme', 'light');
+                    toggle.setAttribute('aria-pressed', 'false');
+                }
+            }
+
+            // Read saved preference
+            const saved = localStorage.getItem(KEY);
+            if (saved === 'dark' || saved === 'light') {
+                applyTheme(saved);
+            } else {
+                // if not saved, use system preference
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    applyTheme('dark');
+                } else {
+                    applyTheme('light');
+                }
+            }
+
+            // Toggle on click
+            toggle.addEventListener('click', () => {
+                const isDark = root.getAttribute('data-theme') === 'dark';
+                const next = isDark ? 'light' : 'dark';
+                applyTheme(next);
+                localStorage.setItem(KEY, next);
+            });
+
+            // Allow toggle via keyboard (Space / Enter)
+            toggle.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggle.click();
+                }
+            });
+
+            // Optional: respond to system changes if user hasn't chosen a preference
+            window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                const saved = localStorage.getItem(KEY);
+                if (saved !== 'dark' && saved !== 'light') {
+                    applyTheme(e.matches ? 'dark' : 'light');
+                }
+            });
+        })();
+    </script>
+</body>
+
+</html>
