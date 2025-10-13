@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Cá Nhân - Sinh Trắc Học Vân Tay</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #0f0f23;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: linear-gradient(45deg, #0f0f23, #16213e, #0f0f23);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            background: radial-gradient(circle, rgba(147, 51, 234, 0.1), transparent);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 3s;
+        }
+
+        .shape:nth-child(3) {
+            width: 400px;
+            height: 400px;
+            bottom: 10%;
+            left: 50%;
+            animation-delay: 6s;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        /* Header */
+        .navbar {
+            background: rgba(15, 15, 35, 0.8) !important;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(167, 139, 250, 0.2);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: #a78bfa !important;
+        }
+
+        .theme-toggle-nav {
+            background: rgba(167, 139, 250, 0.2);
+            border: 2px solid rgba(167, 139, 250, 0.3);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle-nav:hover {
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            transform: rotate(180deg);
+        }
+
+        /* Main Container */
+        .profile-container {
+            padding: 3rem 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Glass Card */
+        .glass-card {
+            background: rgba(22, 33, 62, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            border-radius: 25px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.4s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(167, 139, 250, 0.5);
+            box-shadow: 0 20px 60px rgba(167, 139, 250, 0.3);
+            transform: translateY(-5px);
+        }
+
+        /* Profile Header */
+        .profile-header {
+            text-align: center;
+            padding: 2rem 0;
+        }
+
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            position: relative;
+            border: 5px solid rgba(167, 139, 250, 0.3);
+            overflow: hidden;
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-avatar-placeholder {
+            font-size: 4rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .avatar-upload {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid rgba(22, 33, 62, 0.8);
+        }
+
+        .avatar-upload:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px rgba(167, 139, 250, 0.5);
+        }
+
+        .profile-name {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-role {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .profile-badges {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .badge-custom {
+            background: rgba(167, 139, 250, 0.2);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: #a78bfa;
+        }
+
+        /* Stats Cards */
+        .stat-card {
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title i {
+            color: #a78bfa;
+        }
+
+        /* Form Controls */
+        .form-control, .form-select {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 2px solid rgba(167, 139, 250, 0.3) !important;
+            color: white !important;
+            padding: 0.8rem 1rem;
+            border-radius: 15px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background: rgba(255, 255, 255, 0.08) !important;
+            border-color: #a78bfa !important;
+            box-shadow: 0 0 20px rgba(167, 139, 250, 0.3) !important;
+            color: white !important;
+        }
+
+        .form-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Buttons */
+        .btn-gradient {
+            background: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);
+            border: none;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 15px;
+            font-weight: 600;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(167, 139, 250, 0.3);
+        }
+
+        .btn-gradient:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(167, 139, 250, 0.5);
+            color: white;
+        }
+
+        .btn-outline-custom {
+            background: rgba(167, 139, 250, 0.1);
+            border: 2px solid rgba(167, 139, 250, 0.3);
+            color: #a78bfa;
+            padding: 0.8rem 2rem;
+            border-radius: 15px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-custom:hover {
+            background: rgba(167, 139, 250, 0.2);
+            border-color: rgba(167, 139, 250, 0.5);
+            color: #a78bfa;
+            transform: translateY(-3px);
+        }
+
+        /* Timeline */
+        .timeline-item {
+            padding-left: 3rem;
+            position: relative;
+            padding-bottom: 2rem;
+            border-left: 2px solid rgba(167, 139, 250, 0.3);
+        }
+
+        .timeline-item:last-child {
+            border-left: none;
+        }
+
+        .timeline-icon {
+            position: absolute;
+            left: -1.2rem;
+            top: 0;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid rgba(22, 33, 62, 0.8);
+        }
+
+        .timeline-content {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(167, 139, 250, 0.2);
+        }
+
+        .timeline-date {
+            color: #a78bfa;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+        }
+
+        /* Tab Navigation */
+        .nav-tabs {
+            border-bottom: 2px solid rgba(167, 139, 250, 0.3);
+        }
+
+        .nav-tabs .nav-link {
+            border: none;
+            color: rgba(255, 255, 255, 0.6) !important;
+            padding: 1rem 2rem;
+            transition: all 0.3s;
+        }
+
+        .nav-tabs .nav-link:hover {
+            color: #a78bfa !important;
+        }
+
+        .nav-tabs .nav-link.active {
+            background: rgba(167, 139, 250, 0.2) !important;
+            color: #a78bfa !important;
+            border-radius: 15px 15px 0 0;
+            border-bottom: 3px solid #a78bfa;
+        }
+
+        /* Light Theme */
+        body.light-theme {
+            background: #f8f9fa;
+            color: #1a1a2e;
+        }
+
+        body.light-theme .animated-bg {
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef, #f8f9fa);
+        }
+
+        body.light-theme .navbar {
+            background: rgba(255, 255, 255, 0.9) !important;
+        }
+
+        body.light-theme .navbar-brand {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.light-theme .nav-link {
+            color: #1a1a2e !important;
+        }
+
+        body.light-theme .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(167, 139, 250, 0.2);
+        }
+
+        body.light-theme .profile-name {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.light-theme .profile-role {
+            color: #718096;
+        }
+
+        body.light-theme .stat-label {
+            color: #4a5568;
+        }
+
+        body.light-theme .form-control,
+        body.light-theme .form-select {
+            background: rgba(167, 139, 250, 0.05) !important;
+            color: #1a1a2e !important;
+        }
+
+        body.light-theme .form-label {
+            color: #1a1a2e;
+        }
+
+        body.light-theme .timeline-content {
+            background: rgba(167, 139, 250, 0.05);
+        }
+
+        body.light-theme .timeline-description {
+            color: #4a5568;
+        }
+
+        body.light-theme .shape:nth-child(1) {
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.3), transparent);
+            animation: float 20s infinite ease-in-out, colorPulse 4s infinite;
+        }
+
+        body.light-theme .shape:nth-child(2) {
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.3), transparent);
+            animation: float 20s infinite ease-in-out, colorPulse 5s infinite;
+        }
+
+        body.light-theme .shape:nth-child(3) {
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.3), transparent);
+            animation: float 20s infinite ease-in-out, colorPulse 6s infinite;
+        }
+
+        @keyframes colorPulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        /* Progress Bar */
+        .progress {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            height: 10px;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #a78bfa, #ec4899);
+            border-radius: 10px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .profile-avatar {
+                width: 120px;
+                height: 120px;
+            }
+
+            .profile-name {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">✨ Sinh Trắc Vân Tay</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-center">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-house-door"></i> Trang chủ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="bi bi-person"></i> Hồ sơ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-calendar-check"></i> Lịch hẹn</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <button class="theme-toggle-nav" onclick="toggleTheme()" id="themeToggle">
+                            <span id="themeIcon">🌙</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Container -->
+    <div class="profile-container">
+        <div class="container">
+            <!-- Profile Header -->
+            <div class="glass-card">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <img src="" alt="Avatar" id="profileImage" style="display: none;">
+                        <span class="profile-avatar-placeholder" id="avatarPlaceholder">N</span>
+                        <label class="avatar-upload">
+                            <i class="bi bi-camera-fill"></i>
+                            <input type="file" hidden accept="image/*" onchange="uploadAvatar(event)">
+                        </label>
+                    </div>
+                    <h1 class="profile-name" id="profileName">Nguyễn Văn A</h1>
+                    <p class="profile-role">Khách hàng VIP</p>
+                    <div class="profile-badges">
+                        <span class="badge-custom"><i class="bi bi-shield-check"></i> Đã xác thực</span>
+                        <span class="badge-custom"><i class="bi bi-star-fill"></i> Thành viên từ 2023</span>
+                        <span class="badge-custom"><i class="bi bi-trophy"></i> 5 buổi tư vấn</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-3 col-sm-6">
+                    <div class="glass-card stat-card">
+                        <span class="stat-icon">📊</span>
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">Buổi tư vấn</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="glass-card stat-card">
+                        <span class="stat-icon">📅</span>
+                        <div class="stat-number">3</div>
+                        <div class="stat-label">Lịch hẹn sắp tới</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="glass-card stat-card">
+                        <span class="stat-icon">⭐</span>
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">Độ hài lòng</div>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="glass-card stat-card">
+                        <span class="stat-icon">🎯</span>
+                        <div class="stat-number">12</div>
+                        <div class="stat-label">Tháng tham gia</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="glass-card">
+                <ul class="nav nav-tabs mb-4" id="profileTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button">
+                            <i class="bi bi-person-circle"></i> Thông tin cá nhân
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#history" type="button">
+                            <i class="bi bi-clock-history"></i> Lịch sử
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button">
+                            <i class="bi bi-gear"></i> Cài đặt
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="profileTabsContent">
+                    <!-- Personal Info Tab -->
+                    <div class="tab-pane fade show active" id="info" role="tabpanel">
+                        <h3 class="section-title">
+                            <i class="bi bi-person-badge"></i>
+                            Thông tin cá nhân
+                        </h3>
+                        <form id="profileForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Họ và tên</label>
+                                    <input type="text" class="form-control" value="Nguyễn Văn A" id="fullName">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" value="nguyenvana@email.com">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Số điện thoại</label>
+                                    <input type="tel" class="form-control" value="0123-456-789">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Ngày sinh</label>
+                                    <input type="date" class="form-control" value="1990-01-01">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Giới tính</label>
+                                    <select class="form-select">
+                                        <option>Nam</option>
+                                        <option>Nữ</option>
+                                        <option>Khác</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Nghề nghiệp</label>
+                                    <input type="text" class="form-control" value="Kỹ sư phần mềm">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Địa chỉ</label>
+                                    <textarea class="form-control" rows="2">123 Đường ABC, Quận Đống Đa, Hà Nội</textarea>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Giới thiệu</label>
+                                    <textarea class="form-control" rows="3">Tôi là một người đam mê công nghệ và luôn muốn khám phá bản thân...</textarea>
+                                </div>
+                            </div>
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-gradient me-2">
+                                    <i class="bi bi-save"></i> Lưu thay đổi
+                                </button>
+                                <button type="button" class="btn btn-outline-custom">
+                                    <i class="bi bi-x-circle"></i> Hủy
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- History Tab -->
+                    <div class="tab-pane fade" id="history" role="tabpanel">
+                        <h3 class="section-title">
+                            <i class="bi bi-journal-text"></i>
+                            Lịch sử tư vấn
+                        </h3>
+                        <div class="timeline-item">
+                            <div class="timeline-icon">
+                                <i class="bi bi-check-lg"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">15/10/2024</div>
+                                <div class="timeline-title">Phân tích vân tay lần đầu</div>
+                                <div class="timeline-description">
+                                    Hoàn thành phân tích vân tay và nhận báo cáo chi tiết về năng lực bẩm sinh, tính cách và định hướng nghề nghiệp.
+                                </div>
+                                <div class="mt-2">
+                                    <span class="badge bg-success">Hoàn thành</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon">
+                                <i class="bi bi-check-lg"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">20/11/2024</div>
+                                <div class="timeline-title">Tư vấn định hướng nghề nghiệp</div>
+                                <div class="timeline-description">
+                                    Buổi tư vấn trực tiếp với chuyên gia về con đường phát triển sự nghiệp phù hợp với năng lực.
+                                </div>
+                                <div class="mt-2">
+                                    <span class="badge bg-success">Hoàn thành</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-icon">
+                                <i class="bi bi-clock"></i>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-date">15/12/2024</div>
+                                <div class="timeline-title">Đánh giá tiến trình - Sắp diễn ra</div>
+                                <div class="timeline-description">
+                                    Buổi đánh giá tiến trình phát triển sau 3 tháng và điều chỉnh lộ trình nếu cần.
+                                </div>
+                                <div class="mt-2">
+                                    <span class="badge bg-warning">Sắp tới</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settings Tab -->
+                    <div class="tab-pane fade" id="settings" role="tabpanel">
+                        <h3 class="section-title">
+                            <i class="bi bi-shield-lock"></i>
+                            Bảo mật
+                        </h3>
+                        <form class="mb-4">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Mật khẩu hiện tại</label>
+                                    <input type="password" class="form-control" placeholder="••••••••">
+                                </div>
+                                <div class="col-md-6"></div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Mật khẩu mới</label>
+                                    <input type="password" class="form-control" placeholder="••••••••">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Xác nhận mật khẩu mới</label>
+                                    <input type="password" class="form-control" placeholder="••••••••">
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <button type="submit" class="btn btn-gradient">
+                                    <i class="bi bi-lock"></i> Đổi mật khẩu
+                                </button>
+                            </div>
+                        </form>
+
+                        <hr style="border-color: rgba(167, 139, 250, 0.3); my-4">
+
+                        <h3 class="section-title">
+                            <i class="bi bi-bell"></i>
+                            Thông báo
+                        </h3>
+                        <div class="mb-4">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" checked id="emailNoti">
+                                <label class="form-check-label" for="emailNoti">
+                                    Nhận thông báo qua Email
+                                </label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" checked id="smsNoti">
+                                <label class="form-check-label" for="smsNoti">
+                                    Nhận thông báo qua SMS
+                                </label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="promotionNoti">
+                                <label class="form-check-label" for="promotionNoti">
+                                    Nhận thông tin khuyến mãi
+                                </label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" checked id="appointmentNoti">
+                                <label class="form-check-label" for="appointmentNoti">
+                                    Nhắc nhở lịch hẹn
+                                </label>
+                            </div>
+                        </div>
+
+                        <hr style="border-color: rgba(167, 139, 250, 0.3); my-4">
+
+                        <h3 class="section-title">
+                            <i class="bi bi-eye"></i>
+                            Quyền riêng tư
+                        </h3>
+                        <div class="mb-4">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" checked id="profilePublic">
+                                <label class="form-check-label" for="profilePublic">
+                                    Hiển thị hồ sơ công khai
+                                </label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="showActivity">
+                                <label class="form-check-label" for="showActivity">
+                                    Hiển thị hoạt động gần đây
+                                </label>
+                            </div>
+                        </div>
+
+                        <hr style="border-color: rgba(167, 139, 250, 0.3); my-4">
+
+                        <h3 class="section-title text-danger">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            Vùng nguy hiểm
+                        </h3>
+                        <div class="alert alert-danger" style="background: rgba(220, 38, 38, 0.1); border-color: rgba(220, 38, 38, 0.3); color: #ef4444;">
+                            <strong>Xóa tài khoản:</strong> Hành động này không thể hoàn tác. Tất cả dữ liệu của bạn sẽ bị xóa vĩnh viễn.
+                        </div>
+                        <button class="btn btn-outline-danger" onclick="deleteAccount()">
+                            <i class="bi bi-trash"></i> Xóa tài khoản
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Section -->
+            <div class="row g-4 mt-2">
+                <div class="col-md-6">
+                    <div class="glass-card">
+                        <h3 class="section-title">
+                            <i class="bi bi-graph-up"></i>
+                            Tiến trình phát triển
+                        </h3>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Hoàn thành hồ sơ</span>
+                                <span class="text-success">85%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Mục tiêu tháng này</span>
+                                <span class="text-warning">60%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 60%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Kỹ năng phát triển</span>
+                                <span class="text-info">45%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 45%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="glass-card">
+                        <h3 class="section-title">
+                            <i class="bi bi-bookmark-star"></i>
+                            Khuyến nghị
+                        </h3>
+                        <div class="mb-3 p-3" style="background: rgba(167, 139, 250, 0.1); border-radius: 15px; border-left: 4px solid #a78bfa;">
+                            <h5 style="color: #a78bfa; margin-bottom: 0.5rem;">
+                                <i class="bi bi-lightbulb"></i> Gợi ý tiếp theo
+                            </h5>
+                            <p class="mb-2" style="color: rgba(255, 255, 255, 0.8); font-size: 0.95rem;">
+                                Dựa trên kết quả phân tích, bạn nên tập trung vào phát triển kỹ năng giao tiếp và làm việc nhóm.
+                            </p>
+                            <button class="btn btn-sm btn-gradient">Xem chi tiết</button>
+                        </div>
+                        <div class="mb-3 p-3" style="background: rgba(236, 72, 153, 0.1); border-radius: 15px; border-left: 4px solid #ec4899;">
+                            <h5 style="color: #ec4899; margin-bottom: 0.5rem;">
+                                <i class="bi bi-star"></i> Khóa học phù hợp
+                            </h5>
+                            <p class="mb-2" style="color: rgba(255, 255, 255, 0.8); font-size: 0.95rem;">
+                                Chúng tôi có khóa học "Phát triển tư duy logic" rất phù hợp với bạn.
+                            </p>
+                            <button class="btn btn-sm btn-gradient">Đăng ký ngay</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            const shapes = document.querySelectorAll('.shape');
+            
+            body.classList.toggle('light-theme');
+            
+            if (body.classList.contains('light-theme')) {
+                themeIcon.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+                shapes.forEach((shape) => {
+                    shape.style.filter = 'brightness(1.3)';
+                });
+            } else {
+                themeIcon.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+                shapes.forEach((shape) => {
+                    shape.style.filter = 'brightness(1)';
+                });
+            }
+        }
+
+        // Load saved theme
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            const themeIcon = document.getElementById('themeIcon');
+            const shapes = document.querySelectorAll('.shape');
+            
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                themeIcon.textContent = '☀️';
+                shapes.forEach((shape) => {
+                    shape.style.filter = 'brightness(1.3)';
+                });
+            }
+
+            // Load user data from localStorage
+            const userData = localStorage.getItem('userData');
+            if (userData) {
+                const user = JSON.parse(userData);
+                document.getElementById('profileName').textContent = user.name || 'Nguyễn Văn A';
+                document.getElementById('fullName').value = user.name || 'Nguyễn Văn A';
+                document.getElementById('avatarPlaceholder').textContent = (user.name || 'N').charAt(0).toUpperCase();
+                
+                if (user.avatarUrl) {
+                    document.getElementById('profileImage').src = user.avatarUrl;
+                    document.getElementById('profileImage').style.display = 'block';
+                    document.getElementById('avatarPlaceholder').style.display = 'none';
+                }
+            }
+        });
+
+        // Upload Avatar
+        function uploadAvatar(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('profileImage').src = e.target.result;
+                    document.getElementById('profileImage').style.display = 'block';
+                    document.getElementById('avatarPlaceholder').style.display = 'none';
+                    
+                    // Save to localStorage
+                    const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+                    userData.avatarUrl = e.target.result;
+                    localStorage.setItem('userData', JSON.stringify(userData));
+                    
+                    // Show success message
+                    alert('Ảnh đại diện đã được cập nhật!');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Handle Profile Form Submit
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const fullName = document.getElementById('fullName').value;
+            
+            // Update profile name
+            document.getElementById('profileName').textContent = fullName;
+            document.getElementById('avatarPlaceholder').textContent = fullName.charAt(0).toUpperCase();
+            
+            // Save to localStorage
+            const userData = JSON.parse(localStorage.getItem('userData') || '{}');
+            userData.name = fullName;
+            localStorage.setItem('userData', JSON.stringify(userData));
+            
+            alert('Thông tin đã được cập nhật thành công!');
+        });
+
+        // Delete Account
+        function deleteAccount() {
+            const confirmation = confirm(
+                '⚠️ CẢNH BÁO: Bạn có chắc chắn muốn xóa tài khoản?\n\n' +
+                'Hành động này sẽ:\n' +
+                '• Xóa vĩnh viễn tất cả dữ liệu của bạn\n' +
+                '• Hủy tất cả lịch hẹn đang có\n' +
+                '• Không thể khôi phục\n\n' +
+                'Nhấn OK để tiếp tục hoặc Cancel để hủy.'
+            );
+            
+            if (confirmation) {
+                const doubleCheck = prompt('Nhập "XÓA TÀI KHOẢN" để xác nhận:');
+                if (doubleCheck === 'XÓA TÀI KHOẢN') {
+                    // Clear all data
+                    localStorage.clear();
+                    alert('Tài khoản đã được xóa. Bạn sẽ được chuyển về trang chủ.');
+                    // window.location.href = '/';
+                } else {
+                    alert('Xác nhận không đúng. Hủy xóa tài khoản.');
+                }
+            }
+        }
+
+        // Smooth scroll for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Form validation and feedback
+        const forms = document.querySelectorAll('form');
+        forms.forEach(form => {
+            if (form.id !== 'profileForm') {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    alert('Thay đổi đã được lưu thành công!');
+                });
+            }
+        });
+
+        // Notification settings
+        document.querySelectorAll('.form-check-input').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const setting = this.id;
+                const isChecked = this.checked;
+                console.log(`Setting ${setting} changed to: ${isChecked}`);
+                // TODO: Save to backend
+            });
+        });
+    </script>
+</body>
+</html>
