@@ -1610,3 +1610,168 @@
          display: none;
      }
  }
+
+ /* Why Choose Us Section */
+.why-choose-us {
+    max-width: 1400px;
+    margin: 120px auto;
+    padding: 0 3rem;
+}
+
+.why-container {
+    width: 100%;
+}
+
+.why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2.5rem;
+    margin-bottom: 5rem;
+}
+
+.why-card {
+    background: rgba(22, 33, 62, 0.6);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(167, 139, 250, 0.2);
+    padding: 2.5rem;
+    border-radius: 25px;
+    text-align: center;
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+.why-card:hover {
+    transform: translateY(-15px);
+    border-color: rgba(167, 139, 250, 0.5);
+    box-shadow: 0 20px 60px rgba(167, 139, 250, 0.3);
+}
+
+.why-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+}
+
+.why-card h3 {
+    color: white;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.why-card p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.why-benefits {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.1), rgba(236, 72, 153, 0.1));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(167, 139, 250, 0.2);
+    padding: 4rem;
+    border-radius: 30px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+}
+
+.benefits-left h3 {
+    color: white;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.benefits-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.benefits-list li {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.benefits-right {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.benefit-stat {
+    background: rgba(167, 139, 250, 0.1);
+    padding: 2rem;
+    border-radius: 20px;
+    text-align: center;
+    border: 1px solid rgba(167, 139, 250, 0.2);
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #a78bfa, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+}
+
+.stat-desc {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+}
+
+/* Light theme */
+body.light-theme .why-card,
+body.light-theme .why-benefits {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(167, 139, 250, 0.2);
+}
+
+body.light-theme .why-card h3 {
+    color: #1a1a2e;
+}
+
+body.light-theme .why-card p,
+body.light-theme .benefits-left h3 {
+    color: #4a5568;
+}
+
+body.light-theme .benefits-list li {
+    color: #4a5568;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .why-choose-us {
+        padding: 0 1.5rem;
+        margin: 80px auto;
+    }
+
+    .why-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+
+    .why-benefits {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 2.5rem 1.5rem;
+    }
+
+    .benefits-left h3 {
+        font-size: 1.5rem;
+    }
+
+    .benefits-list li {
+        font-size: 1rem;
+    }
+
+    .stat-value {
+        font-size: 2rem;
+    }
+}

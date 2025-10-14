@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dịch Vụ - Hi!Five</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #1a1a2e;
+            overflow-x: hidden;
+            background: #0f0f23;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: linear-gradient(45deg, #0f0f23, #16213e, #0f0f23);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            background: radial-gradient(circle, rgba(147, 51, 234, 0.1), transparent);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 10%;
+        }
+
+        .shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 3s;
+        }
+
+        .shape:nth-child(3) {
+            width: 400px;
+            height: 400px;
+            bottom: 10%;
+            left: 50%;
+            animation-delay: 6s;
+        }
+
+        @keyframes gradientShift {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(30px, -30px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-20px, 20px) scale(0.9);
+            }
+        }
+
+        /* Header */
+        header {
+            background: rgba(15, 15, 35, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1.2rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background: rgba(15, 15, 35, 0.95);
+            box-shadow: 0 10px 40px rgba(147, 51, 234, 0.3);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 3rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #a78bfa, #ec4899);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #a78bfa;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .theme-toggle {
+            background: rgba(167, 139, 250, 0.2);
+            border: 2px solid rgba(167, 139, 250, 0.3);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-size: 1.5rem;
+        }
+
+        .theme-toggle:hover {
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            border-color: transparent;
+            transform: rotate(180deg) scale(1.1);
+            box-shadow: 0 10px 30px rgba(167, 139, 250, 0.5);
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 20px rgba(167, 139, 250, 0.3);
+            white-space: nowrap;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 10px 30px rgba(167, 139, 250, 0.5);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem 1.5rem 0.5rem 0.5rem;
+            background: rgba(167, 139, 250, 0.1);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .user-profile:hover {
+            background: rgba(167, 139, 250, 0.2);
+            border-color: rgba(167, 139, 250, 0.5);
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 1.2rem;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .user-name {
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .user-role {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: calc(100% + 1rem);
+            right: 0;
+            background: rgba(22, 33, 62, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            border-radius: 20px;
+            padding: 1rem 0;
+            min-width: 250px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .user-profile:hover .user-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .user-dropdown a {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1rem 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .user-dropdown a:hover {
+            background: rgba(167, 139, 250, 0.2);
+            color: white;
+            padding-left: 2rem;
+        }
+
+        .user-dropdown hr {
+            border: none;
+            border-top: 1px solid rgba(167, 139, 250, 0.2);
+            margin: 0.5rem 0;
+        }
+
+        .logout-link {
+            color: #ec4899 !important;
+        }
+
+        .logout-link:hover {
+            background: rgba(236, 72, 153, 0.1) !important;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            width: 30px;
+            height: 25px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .mobile-menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .mobile-menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 150px 2rem 80px;
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 0%, #a78bfa 50%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Services Grid */
+        .services-container {
+            max-width: 1400px;
+            margin: 0 auto 100px;
+            padding: 0 3rem;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 3rem;
+        }
+
+        .service-card {
+            background: rgba(22, 33, 62, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(167, 139, 250, 0.2);
+            border-radius: 30px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .service-card:hover {
+            transform: translateY(-15px);
+            border-color: rgba(167, 139, 250, 0.5);
+            box-shadow: 0 30px 80px rgba(167, 139, 250, 0.4);
+        }
+
+        .service-header {
+            padding: 3rem 2.5rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.1), rgba(236, 72, 153, 0.1));
+        }
+
+        .service-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .service-title {
+            color: white;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .service-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+
+        .service-body {
+            padding: 2.5rem;
+        }
+
+        .service-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .service-features li {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.05rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(167, 139, 250, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .service-features li:last-child {
+            border-bottom: none;
+        }
+
+        .service-features li::before {
+            content: '✓';
+            color: #a78bfa;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        .service-price {
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.15), rgba(236, 72, 153, 0.15));
+            padding: 1.5rem;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .price-label {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-amount {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .price-unit {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.1rem;
+        }
+
+        .service-button {
+            width: 100%;
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            color: white;
+            padding: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(167, 139, 250, 0.3);
+        }
+
+        .service-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(167, 139, 250, 0.5);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            box-shadow: 0 5px 20px rgba(251, 191, 36, 0.4);
+        }
+
+        /* Light Theme */
+        body.light-theme {
+            background: #f8f9fa;
+        }
+
+        body.light-theme .animated-bg {
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef, #f8f9fa);
+        }
+
+        body.light-theme .shape {
+            background: radial-gradient(circle, rgba(167, 139, 250, 0.15), transparent);
+        }
+
+        body.light-theme header {
+            background: rgba(255, 255, 255, 0.9);
+            border-bottom: 1px solid rgba(167, 139, 250, 0.2);
+        }
+
+        body.light-theme .nav-links a {
+            color: #1a1a2e;
+        }
+
+        body.light-theme .hero-content h1 {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        body.light-theme .hero-content p {
+            color: #4a5568;
+        }
+
+        body.light-theme .service-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(167, 139, 250, 0.2);
+        }
+
+        body.light-theme .service-title {
+            color: #1a1a2e;
+        }
+
+        body.light-theme .service-description,
+        body.light-theme .service-features li,
+        body.light-theme .price-unit {
+            color: #4a5568;
+        }
+
+        body.light-theme .price-label {
+            color: #718096;
+        }
+
+        body.light-theme .user-name {
+            color: #1a1a2e;
+        }
+
+        body.light-theme .user-role {
+            color: #718096;
+        }
+
+        body.light-theme .user-dropdown {
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        body.light-theme .user-dropdown a {
+            color: #4a5568;
+        }
+
+        body.light-theme .user-dropdown a:hover {
+            color: #1a1a2e;
+        }
+
+        /* Thêm vào cuối file CSS - TRƯỚC @media queries */
+        body.light-theme footer {
+            background: rgba(255, 255, 255, 0.95);
+            border-top: 1px solid rgba(167, 139, 250, 0.2);
+        }
+
+        body.light-theme .footer-section h3 {
+            color: #1a1a2e;
+        }
+
+        body.light-theme .footer-section p {
+            color: #4a5568;
+        }
+
+        body.light-theme .footer-bottom {
+            border-top: 1px solid rgba(167, 139, 250, 0.2);
+            color: #4a5568;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .services-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 1.5rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background: rgba(15, 15, 35, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                justify-content: flex-start;
+                padding: 3rem 2rem;
+                gap: 2rem;
+                transition: left 0.4s ease;
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links li {
+                width: 100%;
+            }
+
+            .nav-links a {
+                display: block;
+                font-size: 1.3rem;
+                padding: 1rem;
+                text-align: center;
+                border-radius: 15px;
+                background: rgba(167, 139, 250, 0.1);
+            }
+
+            .mobile-menu-toggle {
+                display: flex;
+            }
+
+            .theme-toggle {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+
+            .login-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                order: 3;
+            }
+
+            .user-profile {
+                order: 3;
+                padding: 0.4rem 1rem 0.4rem 0.4rem;
+            }
+
+            .user-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+
+            .user-name {
+                font-size: 0.9rem;
+            }
+
+            .user-role {
+                font-size: 0.75rem;
+            }
+
+            .user-dropdown {
+                right: auto;
+                left: 0;
+                min-width: 220px;
+            }
+
+            body.light-theme .nav-links {
+                background: rgba(255, 255, 255, 0.98);
+            }
+
+            body.light-theme .nav-links a {
+                background: rgba(167, 139, 250, 0.1);
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+
+            .services-container {
+                padding: 0 1.5rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .service-header {
+                padding: 2rem 1.5rem 1.5rem;
+            }
+
+            .service-icon {
+                font-size: 3rem;
+            }
+
+            .service-title {
+                font-size: 1.7rem;
+            }
+
+            .service-body {
+                padding: 2rem 1.5rem;
+            }
+
+            .price-amount {
+                font-size: 2rem;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-menu-toggle {
+                display: none;
+            }
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 15, 35, 0.95);
+            border-top: 1px solid rgba(167, 139, 250, 0.2);
+            padding: 5rem 3rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.8;
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            background: rgba(167, 139, 250, 0.1);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #a78bfa;
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(167, 139, 250, 0.4);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+        <nav>
+            <div class="logo">
+                <img id="logoImg" src="/assets/img/logo_chutrang.png" alt="" style="height: 50px; width: 50px;">
+                Hi!Five
+            </div>
+            <div class="mobile-menu-toggle" id="mobileMenuToggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="Home.html" onclick="closeMobileMenu()">Trang chủ</a></li>
+                <li><a href="Service.html" onclick="closeMobileMenu()">Dịch vụ</a></li>
+                <li><a href="Blog.html" onclick="closeMobileMenu()">Tin tức</a></li>
+
+                <!-- <li><a href="#process" onclick="closeMobileMenu()">Quy trình</a></li> -->
+                <!-- <li><a href="#testimonials" onclick="closeMobileMenu()">Đánh giá</a></li> -->
+                <!-- <li><a href="#contact" onclick="closeMobileMenu()">Liên hệ</a></li> -->
+                <!-- <li><a href="#why-choose-us" onclick="closeMobileMenu()">Tại Sao Chọn</a></li> -->
+
+            </ul>
+            <div class="nav-links">
+                <button class="login-btn" id="loginBtn" onclick="handleLogin()">
+                    Đăng Nhập
+                </button>
+                <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </div>
+
+
+            <!-- User Profile (visible when logged in) -->
+            <div class="user-profile" id="userProfile" style="display: none;">
+                <div class="user-avatar" id="userAvatar">
+                    <img src="" alt="Avatar" id="avatarImg" style="display: none;">
+                    <span class="avatar-placeholder" id="avatarPlaceholder">U</span>
+                </div>
+                <div class="user-info">
+                    <span class="user-name" id="userName">Người dùng</span>
+                    <span class="user-role" id="userRole">Khách hàng</span>
+                </div>
+                <div class="user-dropdown" id="userDropdown">
+                    <a href="Profile.html" onclick="goToProfile()">👤 Trang cá nhân</a>
+                    <a href="#" onclick="goToSettings()">⚙️ Cài đặt</a>
+                    <a href="#" onclick="goToHistory()">📊 Lịch sử tư vấn</a>
+                    <a href="#" onclick="goToAppointments()">📅 Lịch hẹn</a>
+                    <hr>
+                    <a href="#" onclick="handleLogout()" class="logout-link">🚪 Đăng xuất</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Dịch Vụ Của Chúng Tôi</h1>
+            <p>Khám phá các gói dịch vụ phân tích sinh trắc học vân tay chuyên nghiệp, được thiết kế để đáp ứng mọi nhu
+                cầu của bạn</p>
+        </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section class="services-container" id="services">
+        <div class="services-grid" id="servicesGrid"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="footer-logo">
+                    <img id="footerLogoImg" src="/assets/img/logo_chutrang.png" alt=""
+                        style="height: 100px; width: 100px;">
+                    Hi!Five
+                </div>
+                <p>Trung tâm tư vấn sinh trắc học vân tay hàng đầu Việt Nam. Khám phá tiềm năng bản thân với công nghệ
+                    tiên tiến.</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">f</a>
+                    <a href="#" class="social-link">📷</a>
+                    <a href="#" class="social-link">in</a>
+                    <a href="#" class="social-link">📺</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Dịch Vụ</h3>
+                <p>• Phân tích vân tay cá nhân</p>
+                <p>• Tư vấn định hướng nghề nghiệp</p>
+                <p>• Tư vấn giáo dục con cái</p>
+                <p>• Phát triển tài năng bẩm sinh</p>
+            </div>
+            <div class="footer-section">
+                <h3>Liên Hệ</h3>
+                <p>📞 Hotline: 0123-456-789</p>
+                <p>📧 Email: contact@sinhtracvantay.com</p>
+                <p>📍 Địa chỉ: 123 Đường ABC, Quận Đống Đa, Hà Nội</p>
+                <p>⏰ Thời gian: 8:00 - 20:00 (Hàng ngày)</p>
+            </div>
+            <div class="footer-section">
+                <h3>Về Chúng Tôi</h3>
+                <p>• Giới thiệu công ty</p>
+                <p>• Đội ngũ chuyên gia</p>
+                <p>• Tin tức & Blog</p>
+                <p>• Chính sách bảo mật</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <!-- <p>&copy; 2025 Sinh Trắc Học Vân Tay Hi!Five. Tất cả quyền được bảo lưu.</p> -->
+        </div>
+    </footer>
+
+    <script>
+        // Services data
+        const services = [
+            {
+                icon: '👤',
+                title: 'Gói Cá Nhân Cơ Bản',
+                description: 'Phân tích sinh trắc học vân tay toàn diện cho cá nhân, phù hợp với người muốn tìm hiểu bản thân',
+                features: [
+                    'Quét và phân tích 10 ngón tay',
+                    'Báo cáo chi tiết 30+ trang',
+                    'Phân tích tính cách và năng lực',
+                    'Tư vấn trực tiếp 1 giờ',
+                    'Hỗ trợ sau phân tích 1 tháng'
+                ],
+                price: '2.500.000',
+                unit: 'VNĐ',
+                popular: false
+            },
+            {
+                icon: '⭐',
+                title: 'Gói Định Hướng Nghề Nghiệp',
+                description: 'Dành cho học sinh, sinh viên và người muốn chuyển đổi nghề nghiệp',
+                features: [
+                    'Tất cả dịch vụ gói cơ bản',
+                    'Báo cáo định hướng nghề nghiệp chi tiết',
+                    'Phân tích 8 loại trí thông minh',
+                    'Tư vấn lộ trình phát triển sự nghiệp',
+                    'Hỗ trợ sau phân tích 3 tháng'
+                ],
+                price: '4.200.000',
+                unit: 'VNĐ',
+                popular: true
+            },
+            {
+                icon: '👨‍👩‍👧‍👦',
+                title: 'Gói Gia Đình',
+                description: 'Phân tích cho cả gia đình, giúp hiểu rõ và hỗ trợ nhau tốt hơn',
+                features: [
+                    'Phân tích cho 2-4 thành viên',
+                    'Báo cáo từng người + báo cáo tổng hợp',
+                    'Tư vấn phương pháp giáo dục con',
+                    'Phân tích tương thích trong gia đình',
+                    'Hỗ trợ sau phân tích 6 tháng'
+                ],
+                price: '7.500.000',
+                unit: 'VNĐ',
+                popular: false
+            }
+        ];
+
+        // Render services
+        function renderServices() {
+            const servicesGrid = document.getElementById('servicesGrid');
+            servicesGrid.innerHTML = services.map(service => `
+                <div class="service-card">
+                    ${service.popular ? '<span class="popular-badge">🔥 PHỔ BIẾN NHẤT</span>' : ''}
+                    <div class="service-header">
+                        <div class="service-icon">${service.icon}</div>
+                        <h2 class="service-title">${service.title}</h2>
+                        <p class="service-description">${service.description}</p>
+                    </div>
+                    <div class="service-body">
+                        <ul class="service-features">
+                            ${service.features.map(feature => `<li>${feature}</li>`).join('')}
+                        </ul>
+                        <div class="service-price">
+                            <div class="price-label">Chỉ từ</div>
+                            <div class="price-amount">${service.price}</div>
+                            <div class="price-unit">${service.unit}</div>
+                        </div>
+                        <button class="service-button" onclick="bookService('${service.title}')">
+                            Đăng Ký Ngay
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Initial render
+        renderServices();
+
+        // Book service
+        function bookService(serviceName) {
+            alert(`Bạn đã chọn "${serviceName}".\nChúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất!\n\n📞 Hotline: 0123-456-789\n📧 Email: contact@hifive.com`);
+        }
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Theme Toggle - THAY THẾ hàm hiện tại
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('.theme-icon');
+            const shapes = document.querySelectorAll('.shape');
+            const logoImg = document.getElementById('logoImg');
+            const footerLogoImg = document.getElementById('footerLogoImg');
+
+            body.classList.toggle('light-theme');
+
+            if (body.classList.contains('light-theme')) {
+                themeIcon.textContent = '☀️';
+                logoImg.src = '/assets/img/logo_chuden.png';
+                footerLogoImg.src = '/assets/img/logo_chuden.png';
+                localStorage.setItem('theme', 'light');
+                shapes.forEach((shape) => {
+                    shape.style.filter = 'brightness(1.3)';
+                });
+            } else {
+                themeIcon.textContent = '🌙';
+                logoImg.src = '/assets/img/logo_chutrang.png';
+                footerLogoImg.src = '/assets/img/logo_chutrang.png';
+                localStorage.setItem('theme', 'dark');
+                shapes.forEach((shape) => {
+                    shape.style.filter = 'brightness(1)';
+                });
+            }
+        }
+
+        // Load saved theme - SỬA phần DOMContentLoaded
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            const themeToggle = document.getElementById('themeToggle');
+            const themeIcon = themeToggle.querySelector('.theme-icon');
+            const shapes = document.querySelectorAll('.shape');
+            const logoImg = document.getElementById('logoImg');
+            const footerLogoImg = document.getElementById('footerLogoImg');
+
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                themeIcon.textContent = '☀️';
+                logoImg.src = '/assets/img/logo_chuden.png';
+                footerLogoImg.src = '/assets/img/logo_chuden.png';
+                shapes.forEach((shape) => {
+                    shape.style.filter = 'brightness(1.3)';
+                });
+            } else {
+                logoImg.src = '/assets/img/logo_chutrang.png';
+                footerLogoImg.src = '/assets/img/logo_chutrang.png';
+            }
+
+            // Check if user is logged in
+            const userData = localStorage.getItem('userData');
+            if (userData) {
+                const user = JSON.parse(userData);
+                simulateLogin(user.name, user.role, user.avatarUrl);
+            }
+        });
+
+        // Mobile Menu Toggle
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const menuToggle = document.getElementById('mobileMenuToggle');
+
+            navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        }
+
+        function closeMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const menuToggle = document.getElementById('mobileMenuToggle');
+
+            navLinks.classList.remove('active');
+            menuToggle.classList.remove('active');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function (event) {
+            const navLinks = document.getElementById('navLinks');
+            const menuToggle = document.getElementById('mobileMenuToggle');
+            const nav = document.querySelector('nav');
+
+            if (!nav.contains(event.target) && navLinks.classList.contains('active')) {
+                closeMobileMenu();
+            }
+        });
+
+        // Login/Logout Functions
+        function handleLogin() {
+            window.location.href = '/login.html';
+        }
+
+        function handleLogout() {
+            if (confirm('Bạn có chắc chắn muốn đăng xuất?')) {
+                document.getElementById('loginBtn').style.display = 'block';
+                document.getElementById('userProfile').style.display = 'none';
+                localStorage.removeItem('userData');
+                alert('Đã đăng xuất thành công!');
+            }
+        }
+
+        // Simulate login
+        function simulateLogin(name, role, avatarUrl = '') {
+            document.getElementById('loginBtn').style.display = 'none';
+            document.getElementById('userProfile').style.display = 'flex';
+            document.getElementById('userName').textContent = name;
+            document.getElementById('userRole').textContent = role;
+
+            if (avatarUrl) {
+                document.getElementById('avatarImg').src = avatarUrl;
+                document.getElementById('avatarImg').style.display = 'block';
+                document.getElementById('avatarPlaceholder').style.display = 'none';
+            } else {
+                document.getElementById('avatarPlaceholder').textContent = name.charAt(0).toUpperCase();
+            }
+
+            localStorage.setItem('userData', JSON.stringify({ name, role, avatarUrl }));
+        }
+
+        // Navigation functions
+        function goToSettings() {
+            alert('Chuyển đến cài đặt');
+        }
+
+        function goToHistory() {
+            alert('Chuyển đến lịch sử tư vấn');
+        }
+
+        function goToAppointments() {
+            alert('Chuyển đến lịch hẹn');
+        }
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '0';
+                    entry.target.style.transform = 'translateY(30px)';
+                    entry.target.style.animation = 'fadeInUp 0.8s ease forwards';
+                }
+            });
+        }, observerOptions);
+
+        // Observe service cards
+        setTimeout(() => {
+            document.querySelectorAll('.service-card').forEach(el => {
+                observer.observe(el);
+            });
+        }, 100);
+
+        // Add fadeInUp animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+
+</html>
