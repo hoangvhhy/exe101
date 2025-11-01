@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat - Tư Vấn Sinh Trắc Học Vân Tay</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #0f0f23;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: linear-gradient(45deg, #0f0f23, #16213e, #0f0f23);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .shape {
+            position: absolute;
+            background: radial-gradient(circle, rgba(147, 51, 234, 0.1), transparent);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 10%;
+        }
+
+        .shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: 60%;
+            right: 15%;
+            animation-delay: 3s;
+        }
+
+        .shape:nth-child(3) {
+            width: 400px;
+            height: 400px;
+            bottom: 10%;
+            left: 50%;
+            animation-delay: 6s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        /* Header */
+        header {
+            background: rgba(15, 15, 35, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #a78bfa 0%, #ec4899 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn {
+            background: rgba(167, 139, 250, 0.2);
+            border: 2px solid rgba(167, 139, 250, 0.3);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            border-color: transparent;
+            transform: scale(1.05);
+        }
+
+        /* Chat Container */
+        .chat-container {
+            max-width: 1200px;
+            margin: 100px auto 2rem;
+            padding: 0 2rem;
+            height: calc(100vh - 140px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Chat Header */
+        .chat-header {
+            background: rgba(22, 33, 62, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            border-radius: 25px 25px 0 0;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .ai-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .ai-info h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .ai-status {
+            color: #10b981;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Chat Messages */
+        .chat-messages {
+            flex: 1;
+            background: rgba(22, 33, 62, 0.6);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(167, 139, 250, 0.3);
+            border-right: 1px solid rgba(167, 139, 250, 0.3);
+            padding: 2rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: rgba(167, 139, 250, 0.1);
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            border-radius: 10px;
+        }
+
+        .message {
+            display: flex;
+            gap: 1rem;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+        }
+
+        .message.ai .message-avatar {
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+        }
+
+        .message-content {
+            max-width: 70%;
+            background: rgba(167, 139, 250, 0.15);
+            padding: 1.2rem 1.5rem;
+            border-radius: 20px;
+            border: 1px solid rgba(167, 139, 250, 0.2);
+        }
+
+        .message.user .message-content {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(6, 182, 212, 0.2));
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .message-text {
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 0.5rem;
+        }
+
+        /* Typing Indicator */
+        .typing-indicator {
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: rgba(167, 139, 250, 0.15);
+            border-radius: 20px;
+            max-width: fit-content;
+        }
+
+        .typing-indicator.active {
+            display: flex;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: #a78bfa;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .quick-btn {
+            background: rgba(167, 139, 250, 0.2);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            color: #a78bfa;
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-btn:hover {
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        /* Chat Input */
+        .chat-input-container {
+            background: rgba(22, 33, 62, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            border-radius: 0 0 25px 25px;
+            padding: 1.5rem 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+
+        .input-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .chat-input {
+            width: 100%;
+            background: rgba(167, 139, 250, 0.1);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            color: white;
+            padding: 1rem 3.5rem 1rem 1.2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-family: inherit;
+            resize: none;
+            max-height: 150px;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: rgba(167, 139, 250, 0.6);
+            background: rgba(167, 139, 250, 0.15);
+        }
+
+        .chat-input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .attach-btn {
+            position: absolute;
+            right: 1rem;
+            bottom: 1rem;
+            background: transparent;
+            border: none;
+            color: #a78bfa;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .attach-btn:hover {
+            transform: scale(1.2);
+            color: #ec4899;
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            border: none;
+            color: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .send-btn:hover:not(:disabled) {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(167, 139, 250, 0.5);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Welcome Message */
+        .welcome-message {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .welcome-message h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #ffffff, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .welcome-message p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .feature-item {
+            background: rgba(167, 139, 250, 0.1);
+            border: 1px solid rgba(167, 139, 250, 0.2);
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: left;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-item h4 {
+            color: #a78bfa;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .feature-item p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .chat-container {
+                margin: 80px 1rem 1rem;
+                height: calc(100vh - 100px);
+            }
+
+            .chat-header {
+                padding: 1rem 1.5rem;
+            }
+
+            .ai-avatar {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+
+            .ai-info h2 {
+                font-size: 1.2rem;
+            }
+
+            .chat-messages {
+                padding: 1.5rem;
+            }
+
+            .message-content {
+                max-width: 85%;
+            }
+
+            .welcome-message h3 {
+                font-size: 1.5rem;
+            }
+
+            .feature-list {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                padding: 0 1rem;
+            }
+
+            .logo {
+                font-size: 1.2rem;
+            }
+
+            .back-btn {
+                padding: 8px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* File Upload Preview */
+        .file-preview {
+            display: none;
+            background: rgba(167, 139, 250, 0.1);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            border-radius: 15px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .file-preview.active {
+            display: flex;
+        }
+
+        .file-icon {
+            font-size: 2rem;
+        }
+
+        .file-info {
+            flex: 1;
+        }
+
+        .file-name {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .file-size {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.85rem;
+        }
+
+        .remove-file {
+            background: rgba(236, 72, 153, 0.2);
+            border: 1px solid rgba(236, 72, 153, 0.3);
+            color: #ec4899;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .remove-file:hover {
+            background: #ec4899;
+            color: white;
+        }
+
+        /* Suggestions */
+        .suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            padding: 1rem 0;
+        }
+
+        .suggestion-chip {
+            background: rgba(167, 139, 250, 0.15);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            color: #a78bfa;
+            padding: 0.7rem 1.3rem;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .suggestion-chip:hover {
+            background: linear-gradient(135deg, #a78bfa, #ec4899);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="animated-bg">
+        <div class="floating-shapes">
+            <div class="shape"></div>
+            <div class="shape"></div>
+            <div class="shape"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <div class="logo">
+                🤖 AI Tư Vấn Sinh Trắc
+            </div>
+            <button class="back-btn" onclick="goBack()">← Quay lại</button>
+        </nav>
+    </header>
+
+    <!-- Chat Container -->
+    <div class="chat-container">
+        <!-- Chat Header -->
+        <div class="chat-header">
+            <div class="ai-avatar">🧠</div>
+            <div class="ai-info">
+                <h2>AI Assistant - Hi!Five</h2>
+                <div class="ai-status">
+                    <span class="status-dot"></span>
+                    Sẵn sàng hỗ trợ bạn
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Messages -->
+        <div class="chat-messages" id="chatMessages">
+            <div class="welcome-message">
+                <h3>👋 Xin chào! Tôi là AI Assistant</h3>
+                <p>Tôi có thể giúp bạn tìm hiểu về sinh trắc học vân tay, phân tích tính cách và định hướng nghề nghiệp</p>
+                
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <div class="feature-icon">🔍</div>
+                        <h4>Phân Tích Vân Tay</h4>
+                        <p>Giải thích ý nghĩa các loại vân tay và đặc điểm</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">🎯</div>
+                        <h4>Định Hướng Nghề Nghiệp</h4>
+                        <p>Tư vấn nghề nghiệp phù hợp với năng lực</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">💡</div>
+                        <h4>Tư Vấn Tâm Lý</h4>
+                        <p>Phân tích tính cách và điểm mạnh</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">📊</div>
+                        <h4>Báo Cáo Chi Tiết</h4>
+                        <p>Giải thích các chỉ số trong báo cáo</p>
+                    </div>
+                </div>
+
+                <div class="suggestions">
+                    <div class="suggestion-chip" onclick="sendQuickMessage('Sinh trắc học vân tay là gì?')">
+                        Sinh trắc học vân tay là gì?
+                    </div>
+                    <div class="suggestion-chip" onclick="sendQuickMessage('Các loại vân tay có ý nghĩa gì?')">
+                        Các loại vân tay có ý nghĩa gì?
+                    </div>
+                    <div class="suggestion-chip" onclick="sendQuickMessage('Làm sao để phân tích vân tay?')">
+                        Làm sao để phân tích vân tay?
+                    </div>
+                    <div class="suggestion-chip" onclick="sendQuickMessage('Định hướng nghề nghiệp qua vân tay')">
+                        Định hướng nghề nghiệp qua vân tay
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="chat-input-container">
+            <div class="file-preview" id="filePreview">
+                <div class="file-icon">📎</div>
+                <div class="file-info">
+                    <div class="file-name" id="fileName">filename.jpg</div>
+                    <div class="file-size" id="fileSize">2.5 MB</div>
+                </div>
+                <button class="remove-file" onclick="removeFile()">✕</button>
+            </div>
+            
+            <div class="input-wrapper">
+                <textarea 
+                    class="chat-input" 
+                    id="chatInput" 
+                    placeholder="Nhập câu hỏi của bạn..."
+                    rows="1"
+                    onkeypress="handleKeyPress(event)"
+                    oninput="autoResize(this)"
+                ></textarea>
+                <input type="file" id="fileInput" accept="image/*,.pdf" style="display: none;" onchange="handleFileSelect(event)">
+                <button class="attach-btn" onclick="document.getElementById('fileInput').click()">📎</button>
+            </div>
+            <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+                ➤
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let selectedFile = null;
+
+        function goBack() {
+            window.history.back();
+        }
+
+        function getCurrentTime() {
+            const now = new Date();
+            return now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 150) + 'px';
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        function sendQuickMessage(message) {
+            document.getElementById('chatInput').value = message;
+            sendMessage();
+        }
+
+        function addMessage(text, isUser = false) {
+            const messagesContainer = document.getElementById('chatMessages');
+            const welcomeMsg = messagesContainer.querySelector('.welcome-message');
+            if (welcomeMsg) {
+                welcomeMsg.remove();
+            }
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user' : 'ai'}`;
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${isUser ? '👤' : '🤖'}</div>
+                <div class="message-content">
+                    <div class="message-text">${text}</div>
+                    <div class="message-time">${getCurrentTime()}</div>
+                </div>
+            `;
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function showTypingIndicator() {
+            const messagesContainer = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message ai';
+            typingDiv.id = 'typingIndicator';
+            
+            typingDiv.innerHTML = `
+                <div class="message-avatar">🤖</div>
+                <div class="typing-indicator active">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+            
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        }
+
+        function getAIResponse(userMessage) {
+            const lowerMessage = userMessage.toLowerCase();
+            
+            const responses = {
+                'sinh trắc': 'Sinh trắc học vân tay là phương pháp khoa học phân tích các đặc điểm sinh học của con người thông qua hình dạng, đường vân và cấu trúc vân tay. Dựa trên nghiên cứu của khoa học não bộ, mỗi loại vân tay phản ánh một số đặc điểm tính cách, năng lực và khuynh hướng nghề nghiệp nhất định.\n\n🔬 Sinh trắc học vân tay có độ chính xác cao vì vân tay được hình thành từ khi thai nhi 13-19 tuần và không thay đổi suốt đời.',
+                
+                'loại vân': 'Có 3 loại vân tay chính:\n\n🌀 **Vân xoáy (Whorl)**: Người có tư duy sáng tạo, độc lập, thích khám phá. Phù hợp với nghề nghiệp sáng tạo như thiết kế, nghệ thuật, nghiên cứu.\n\n➰ **Vân tròn (Loop)**: Người linh hoạt, giao tiếp tốt, thích hợp tác. Phù hợp với nghề kinh doanh, quản lý, quan hệ công chúng.\n\n🎯 **Vân cung (Arch)**: Người thực tế, có trách nhiệm, làm việc có hệ thống. Phù hợp với kỹ thuật, kế toán, quản lý dự án.',
+                
+                'phân tích': 'Quy trình phân tích vân tay chuyên nghiệp gồm:\n\n1️⃣ **Thu thập dữ liệu**: Quét 10 ngón tay bằng thiết bị chuyên dụng\n2️⃣ **Phân loại vân tay**: Xác định loại vân trên mỗi ngón\n3️⃣ **Phân tích chỉ số**: Tính toán các chỉ số trí thông minh đa dạng\n4️⃣ **Đánh giá tổng hợp**: Kết hợp với thông tin cá nhân\n5️⃣ **Tư vấn chuyên sâu**: Chuyên gia giải thích và tư vấn trực tiếp\n\n📊 Báo cáo chi tiết 50+ trang bao gồm tính cách, năng lực, định hướng nghề nghiệp.',
+                
+                'nghề nghiệp': 'Định hướng nghề nghiệp qua sinh trắc học vân tay dựa trên:\n\n💡 **Trí thông minh đa dạng**: Logic-Toán học, Ngôn ngữ, Không gian, Âm nhạc, Vận động, Tự nhiên, Xã hội, Nội tâm\n\n🎯 **Tính cách**: Hướng nội/ngoại, Logic/Cảm xúc, Lý luận/Trực giác\n\n⚡ **Năng lực**: Lãnh đạo, Sáng tạo, Phân tích, Giao tiếp\n\nVí dụ:\n- Vân xoáy cao: Nghệ thuật, Nghiên cứu, IT\n- Vân tròn cao: Marketing, Sales, HR\n- Vân cung cao: Kỹ thuật, Kế toán, Luật',
+                
+                'trẻ em': 'Phân tích sinh trắc vân tay cho trẻ em giúp:\n\n👶 **Hiểu rõ con sớm** (từ 3 tuổi):\n- Nhận diện tính cách bẩm sinh\n- Phát hiện năng khiếu tiềm ẩn\n- Xác định phong cách học tập\n\n📚 **Giáo dục đúng cách**:\n- Chọn phương pháp dạy phù hợp\n- Phát triển điểm mạnh\n- Hỗ trợ điểm yếu hiệu quả\n\n🎯 **Định hướng tương lai**:\n- Chọn hoạt động ngoại khóa\n- Lựa chọn trường học\n- Chuẩn bị cho sự nghiệp\n\n💖 Cha mẹ sẽ tự tin hơn trong việc nuôi dạy con!',
+                
+                'chính xác': 'Độ chính xác của sinh trắc học vân tay:\n\n✅ **Cơ sở khoa học**:\n- Vân tay hình thành từ tuần thứ 13-19 của thai kỳ\n- Không thay đổi suốt đời (trừ trường hợp tai nạn nghiêm trọng)\n- Liên quan đến sự phát triển của não bộ\n\n📊 **Độ tin cậy**:\n- 98% độ chính xác về phân loại vân tay\n- 85-90% phù hợp với tính cách thực tế\n- Được nghiên cứu và ứng dụng tại 50+ quốc gia\n\n⚠️ **Lưu ý**: Kết quả cần kết hợp với yếu tố môi trường, giáo dục để có đánh giá chính xác nhất.',
+                
+                'giá': 'Bảng giá dịch vụ phân tích sinh trắc học:\n\n💎 **Gói cơ bản** - 1.500.000đ:\n- Quét và phân tích vân tay\n- Báo cáo cơ bản 30 trang\n- Tư vấn trực tuyến 30 phút\n\n⭐ **Gói tiêu chuẩn** - 2.500.000đ:\n- Quét và phân tích chuyên sâu\n- Báo cáo chi tiết 50 trang\n- Tư vấn trực tiếp 60 phút\n- Lộ trình phát triển cá nhân\n\n🏆 **Gói VIP** - 4.500.000đ:\n- Toàn bộ dịch vụ gói tiêu chuẩn\n- Tư vấn 2 lần (ban đầu + sau 3 tháng)\n- Hỗ trợ trực tuyến 6 tháng\n- Tư vấn gia đình (tối đa 4 người)\n\n🎁 Giảm 20% cho nhóm từ 3 người trở lên!',
+                
+                'đặt lịch': 'Để đặt lịch tư vấn, bạn có thể:\n\n📞 **Hotline**: 0123-456-789 (8:00 - 20:00)\n📧 **Email**: contact@hifive.com\n💬 **Website**: www.hifive.com/booking\n📍 **Địa chỉ**: 123 Đường ABC, Quận Đống Đa, Hà Nội\n\n⏰ **Quy trình đặt lịch**:\n1. Liên hệ qua kênh tiện nhất\n2. Chọn gói dịch vụ và thời gian\n3. Cung cấp thông tin cơ bản\n4. Nhận xác nhận qua SMS/Email\n5. Đến trung tâm đúng giờ hẹn\n\n🎁 Ưu đãi: Đặt lịch online giảm 10%!',
+                
+                'bảo mật': 'Cam kết bảo mật thông tin khách hàng:\n\n🔒 **Bảo vệ dữ liệu**:\n- Hệ thống mã hóa chuẩn quốc tế\n- Không chia sẻ thông tin với bên thứ ba\n- Lưu trữ an toàn theo quy định pháp luật\n\n📋 **Quyền riêng tư**:\n- Thông tin chỉ sử dụng cho mục đích tư vấn\n- Khách hàng có quyền yêu cầu xóa dữ liệu\n- Báo cáo chỉ gửi cho khách hàng\n\n✅ **Chứng nhận**:\n- ISO 27001 về bảo mật thông tin\n- Tuân thủ Luật Bảo vệ dữ liệu cá nhân Việt Nam\n\n💼 Bạn hoàn toàn yên tâm về quyền riêng tư!',
+                
+                'khác biệt': 'Sự khác biệt của Hi!Five:\n\n🔬 **Công nghệ tiên tiến**:\n- Máy quét vân tay độ phân giải cao nhất\n- Phần mềm phân tích AI hiện đại\n- Cập nhật nghiên cứu quốc tế mới nhất\n\n👨‍🎓 **Đội ngũ chuyên gia**:\n- 50+ chuyên gia có chứng chỉ quốc tế\n- 15 năm kinh nghiệm trung bình\n- Đào tạo liên tục tại nước ngoài\n\n📊 **Báo cáo toàn diện**:\n- 50+ trang phân tích chi tiết\n- Biểu đồ trực quan dễ hiểu\n- Lộ trình cụ thể từng giai đoạn\n\n🤝 **Hỗ trợ lâu dài**:\n- Tư vấn sau phân tích miễn phí\n- Theo dõi tiến độ phát triển\n- Cộng đồng khách hàng sôi động',
+                
+                'mặc định': 'Tôi là AI Assistant của Hi!Five, chuyên tư vấn về sinh trắc học vân tay. Tôi có thể giúp bạn:\n\n🔍 Giải thích về sinh trắc học và vân tay\n🎯 Tư vấn định hướng nghề nghiệp\n👶 Tư vấn giáo dục con cái\n💡 Phân tích tính cách và năng lực\n📊 Giải đáp về báo cáo phân tích\n💰 Thông tin về dịch vụ và giá cả\n📅 Hướng dẫn đặt lịch tư vấn\n\nBạn muốn tìm hiểu về vấn đề gì? Hãy đặt câu hỏi cụ thể để tôi có thể hỗ trợ tốt nhất! 😊'
+            };
+            
+            for (let key in responses) {
+                if (lowerMessage.includes(key)) {
+                    return responses[key];
+                }
+            }
+            
+            if (lowerMessage.includes('xin chào') || lowerMessage.includes('hello') || lowerMessage.includes('hi')) {
+                return '👋 Xin chào! Tôi là AI Assistant của Hi!Five. Rất vui được hỗ trợ bạn tìm hiểu về sinh trắc học vân tay. Bạn có câu hỏi gì muốn hỏi tôi không?';
+            }
+            
+            if (lowerMessage.includes('cảm ơn') || lowerMessage.includes('thanks')) {
+                return '🙏 Rất vui được giúp đỡ bạn! Nếu bạn còn thắc mắc gì khác về sinh trắc học vân tay, đừng ngại hỏi nhé. Chúc bạn một ngày tốt lành! ✨';
+            }
+            
+            return responses['mặc định'];
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message && !selectedFile) return;
+            
+            let fullMessage = message;
+            if (selectedFile) {
+                fullMessage += ` [Đã gửi file: ${selectedFile.name}]`;
+            }
+            
+            addMessage(fullMessage, true);
+            input.value = '';
+            input.style.height = 'auto';
+            
+            if (selectedFile) {
+                removeFile();
+            }
+            
+            document.getElementById('sendBtn').disabled = true;
+            
+            showTypingIndicator();
+            
+            setTimeout(() => {
+                removeTypingIndicator();
+                const response = getAIResponse(message);
+                addMessage(response, false);
+                document.getElementById('sendBtn').disabled = false;
+                
+                if (message.toLowerCase().includes('đặt lịch') || 
+                    message.toLowerCase().includes('booking') ||
+                    message.toLowerCase().includes('hẹn')) {
+                    setTimeout(() => {
+                        addQuickActions();
+                    }, 500);
+                }
+            }, 1500 + Math.random() * 1000);
+        }
+
+        function addQuickActions() {
+            const messagesContainer = document.getElementById('chatMessages');
+            const actionsDiv = document.createElement('div');
+            actionsDiv.className = 'quick-actions';
+            
+            actionsDiv.innerHTML = `
+                <button class="quick-btn" onclick="sendQuickMessage('Gói cơ bản')">💎 Gói cơ bản</button>
+                <button class="quick-btn" onclick="sendQuickMessage('Gói tiêu chuẩn')">⭐ Gói tiêu chuẩn</button>
+                <button class="quick-btn" onclick="sendQuickMessage('Gói VIP')">🏆 Gói VIP</button>
+                <button class="quick-btn" onclick="sendQuickMessage('Tư vấn cho trẻ em')">👶 Tư vấn trẻ em</button>
+            `;
+            
+            messagesContainer.appendChild(actionsDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            selectedFile = file;
+            
+            const preview = document.getElementById('filePreview');
+            const fileName = document.getElementById('fileName');
+            const fileSize = document.getElementById('fileSize');
+            
+            fileName.textContent = file.name;
+            fileSize.textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
+            
+            preview.classList.add('active');
+        }
+
+        function removeFile() {
+            selectedFile = null;
+            document.getElementById('filePreview').classList.remove('active');
+            document.getElementById('fileInput').value = '';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('chatInput').focus();
+        });
+    </script>
+</body>
+</html>
