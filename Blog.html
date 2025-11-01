@@ -398,6 +398,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
         }
 
         .hero-content p {
@@ -405,6 +406,7 @@
             color: rgba(255, 255, 255, 0.7);
             max-width: 600px;
             margin: 0 auto;
+            animation: fadeInUp 1s ease 0.2s both;
         }
 
         /* Filter Section */
@@ -430,6 +432,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 600;
+            animation: fadeInUp 1s ease 0.4s both;
         }
 
         .filter-tab:hover,
@@ -939,6 +942,165 @@
             border-top: 1px solid rgba(167, 139, 250, 0.2);
             color: #4a5568;
         }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f0f23 0%, #16213e 50%, #0f0f23 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader {
+            width: 80px;
+            height: 80px;
+            border: 5px solid rgba(167, 139, 250, 0.2);
+            border-top: 5px solid #a78bfa;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-text {
+            position: absolute;
+            margin-top: 150px;
+            color: #a78bfa;
+            font-size: 1.2rem;
+            font-weight: 600;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 0.6;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        /* Scroll Reveal Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal-left.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal-right.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-scale {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.8s ease;
+        }
+
+        .reveal-scale.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Stagger Animation for Grid Items */
+        .blog-card {
+            animation: none;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .blog-card.animate {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .filter-tab {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .filter-tab.animate {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+
+        /* Featured Card Animation */
+        .featured-card {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        .featured-card.animate {
+            animation: fadeInUp 1s ease forwards;
+        }
     </style>
 </head>
 
@@ -1411,35 +1573,163 @@
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.style.opacity = '0';
-                    entry.target.style.transform = 'translateY(30px)';
                     entry.target.style.animation = 'fadeInUp 0.8s ease forwards';
                 }
             });
         }, observerOptions);
 
-        // Observe blog cards
+        // Observe elements - THAY THẾ ĐOẠN setTimeout
         setTimeout(() => {
-            document.querySelectorAll('.blog-card').forEach(el => {
+            document.querySelectorAll('.blog-card, .featured-card, .filter-tab').forEach(el => {
                 observer.observe(el);
             });
         }, 100);
 
-        // Add fadeInUp animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
+        // ===== LOADING SCREEN =====
+        window.addEventListener('load', () => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+                // Trigger animations after loading
+                setTimeout(() => {
+                    initScrollAnimations();
+                    animateElements();
+                }, 300);
+            }, 800); // Delay 800ms để hiển thị loading
+        });
+
+        // ===== SCROLL REVEAL ANIMATIONS =====
+        function initScrollAnimations() {
+            const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
+
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('active');
+                        }, index * 100); // Stagger effect
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.15,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            revealElements.forEach(el => revealObserver.observe(el));
+        }
+
+        // ===== ANIMATE FILTER TABS =====
+        function animateElements() {
+            const filterTabs = document.querySelectorAll('.filter-tab');
+            filterTabs.forEach((tab, index) => {
+                setTimeout(() => {
+                    tab.classList.add('animate');
+                }, index * 100);
+            });
+
+            // Animate featured card
+            const featuredCard = document.querySelector('.featured-card');
+            if (featuredCard) {
+                setTimeout(() => {
+                    featuredCard.classList.add('animate');
+                }, 400);
             }
-        `;
-        document.head.appendChild(style);
+        }
+
+        // ===== ANIMATE BLOG CARDS ON RENDER =====
+        function animateBlogCards() {
+            const blogCards = document.querySelectorAll('.blog-card');
+            blogCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('animate');
+                }, index * 100); // Stagger animation
+            });
+        }
+
+        // Update renderBlogPosts function
+        function renderBlogPosts(posts) {
+            const blogGrid = document.getElementById('blogGrid');
+            blogGrid.innerHTML = posts.map(post => `
+        <div class="blog-card" data-category="${post.category}">
+            <img src="${post.image}" alt="${post.title}" class="blog-image">
+            <div class="blog-content">
+                <span class="blog-category">${post.categoryName}</span>
+                <h3 class="blog-title">${post.title}</h3>
+                <p class="blog-excerpt">${post.excerpt}</p>
+                <div class="blog-meta">
+                    <div class="blog-author">
+                        <div class="author-avatar">${post.author.charAt(0)}</div>
+                        <div class="author-info">
+                            <span class="author-name">${post.author}</span>
+                            <span class="blog-date">${post.date}</span>
+                        </div>
+                    </div>
+                    <span class="read-time">📖 ${post.readTime}</span>
+                </div>
+            </div>
+        </div>
+    `).join('');
+
+            // Add click events
+            document.querySelectorAll('.blog-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    alert('Mở bài viết chi tiết');
+                });
+            });
+
+            // Trigger animation
+            setTimeout(() => {
+                animateBlogCards();
+            }, 100);
+        }
+
+        // ===== HEADER SCROLL EFFECT WITH ANIMATION =====
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+
+            lastScroll = currentScroll;
+        });
+
+        // ===== SMOOTH SCROLL WITH EASING =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset;
+                    const startPosition = window.pageYOffset;
+                    const distance = targetPosition - startPosition - 80; // Offset for header
+                    const duration = 1000;
+                    let start = null;
+
+                    function animation(currentTime) {
+                        if (start === null) start = currentTime;
+                        const timeElapsed = currentTime - start;
+                        const run = ease(timeElapsed, startPosition, distance, duration);
+                        window.scrollTo(0, run);
+                        if (timeElapsed < duration) requestAnimationFrame(animation);
+                    }
+
+                    function ease(t, b, c, d) {
+                        t /= d / 2;
+                        if (t < 1) return c / 2 * t * t + b;
+                        t--;
+                        return -c / 2 * (t * (t - 2) - 1) + b;
+                    }
+
+                    requestAnimationFrame(animation);
+                }
+            });
+        });
     </script>
 </body>
 
